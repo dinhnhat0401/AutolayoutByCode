@@ -23,14 +23,30 @@ class ViewController: UIViewController {
         containerView.addSubview(scrollView)
         
         for i in 0...2 {
-            var tmpView = UIView()
+            let tmpView = UIView()
             contentViews.append(tmpView)
             configContentView(for: contentViews[i])
+            
+//            NSLayoutConstraint.constraints(withVisualFormat: "|imageView|", options: [], metrics: nil, views: views)
         }
     }
     
     private func configContentView(for view: UIView) {
+        let imageView = UIImageView(image: UIImage(named: "harry-dinh"))
+        let description = UILabel()
+        
+        view.addSubview(imageView)
+        view.addSubview(description)
+        
+        let views: [String: UIView] = ["view": view, "imageView": imageView, "description": description]
+
+        for _ in views {
+            view.translatesAutoresizingMaskIntoConstraints = false
+        }
+        
+        NSLayoutConstraint.constraints(withVisualFormat: "|imageView|", options: [], metrics: nil, views: views)
+        NSLayoutConstraint.constraints(withVisualFormat: "V:|imageView", options: [], metrics: nil, views: views)
+        NSLayoutConstraint.constraints(withVisualFormat: "V:[description]|", options: [], metrics: nil, views: views)
         
     }
 }
-
