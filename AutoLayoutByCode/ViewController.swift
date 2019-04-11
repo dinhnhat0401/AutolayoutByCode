@@ -23,34 +23,36 @@ class ViewController: UIViewController {
         containerView.backgroundColor = .blue
         containerView.addSubview(scrollView)
         
-//        for i in 0...2 {
-//            let tmpView = UIView()
-//            containerView.addSubview(tmpView)
-//            contentViews.append(tmpView)
-//            configContentView(for: contentViews[i])
-//        }
+        for i in 0...2 {
+            let tmpView = UIView()
+            scrollView.addSubview(tmpView)
+            contentViews.append(tmpView)
+            configContentView(for: contentViews[i], text: "This is a test" )
+        }
         
         let views = ["containerView": containerView,
-                     "scrollView": scrollView
-//                     "contentView1": contentViews[0],
-//                     "contentView2": contentViews[1],
-//                     "contentView3": contentViews[2]
+                     "scrollView": scrollView,
+                     "contentView1": contentViews[0],
+                     "contentView2": contentViews[1],
+                     "contentView3": contentViews[2]
         ]
         for (_, view) in views {
             view.translatesAutoresizingMaskIntoConstraints = false
         }
         
-        NSLayoutConstraint.constraints(withVisualFormat: "H:|-0@750-[containerView]-0@750-|", options: [], metrics: nil, views: views)
-        NSLayoutConstraint.constraints(withVisualFormat: "V:|-0@750-[containerView]-0@750-|", options: [], metrics: nil, views: views)
-        NSLayoutConstraint.constraints(withVisualFormat: "|[scrollView]|", options: [.alignAllLeading, .alignAllTrailing, .alignAllTop, .alignAllBottom, .alignAllCenterX, .alignAllCenterY], metrics:nil, views: views)
-//        NSLayoutConstraint.constraints(withVisualFormat: "|[contentView1][contentView2][contentView3]|", options: [], metrics: nil, views: views)
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|[containerView]|", options: [], metrics: nil, views: views))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|[containerView]|", options: [], metrics: nil, views: views))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|[scrollView(==contentView1)]|", options: [], metrics:nil, views: views))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|[scrollView(==contentView1)]|", options: [], metrics:nil, views: views))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "|[contentView1][contentView2(==contentView1)][contentView3(==contentView1)]|", options: [], metrics: nil, views: views))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|[contentView1][contentView2(==contentView1)][contentView3(==contentView1)]|", options: [], metrics: nil, views: views))
     }
     
-    private func configContentView(for view: UIView) {
+    private func configContentView(for view: UIView, text: String) {
         let imageView = UIImageView(image: UIImage(named: "harry-dinh"))
         imageView.contentMode = .scaleAspectFit
         let description = UILabel()
-        
+        description.text = text
         view.addSubview(imageView)
         view.addSubview(description)
         
@@ -60,9 +62,12 @@ class ViewController: UIViewController {
             view.translatesAutoresizingMaskIntoConstraints = false
         }
         
-        NSLayoutConstraint.constraints(withVisualFormat: "|[imageView]|", options: [], metrics: nil, views: views)
-        NSLayoutConstraint.constraints(withVisualFormat: "V:|[imageView]", options: [], metrics: nil, views: views)
-        NSLayoutConstraint.constraints(withVisualFormat: "V:[description]|", options: [], metrics: nil, views: views)
+        let imgHeight = 400
+        let metrics = ["imageViewHeight": imgHeight]
+        
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:|[imageView]|", options: [], metrics: nil, views: views))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "V:|[imageView(imageViewHeight)][description]|", options: [], metrics: metrics, views: views))
+        NSLayoutConstraint.activate(NSLayoutConstraint.constraints(withVisualFormat: "H:[description]|", options: [], metrics: nil, views: views))
         
     }
 }
